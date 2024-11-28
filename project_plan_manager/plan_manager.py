@@ -25,17 +25,32 @@ def save_tasks(tasks):
     with open('tasks.json', 'w') as f:
         json.dump(tasks, f, indent=4)
 
-def add_task(description):
+def with_file(func):
+    def wrapper(*args, **kwargs):
+        tasks = load_tasks()
+        modified = func(tasks, *args, *kwargs)
+        save_tasks(modified)
+        return modified
+    return wrapper
+
+@with_file
+def add_task_to_file(tasks, description):
+    return add_task(tasks, description)
+
+@with_file
+def delete_task_to_file(tasks, task_id):
+    return delete_task(tasks, task_id)
+
+def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
-    tasks = load_tasks()
+    print("Tasks:", tasks)
     if (len(description) == 0):
         raise InvalidTaskError("Invalid Task Description")
     new_task = Task(id=len(tasks)+1, description=description)
     tasks.append(new_task.__dict__)
-    save_tasks(tasks)
+    return tasks
 
-def delete_task(task_id):
-    tasks = load_tasks()
+def delete_task(tasks, task_id):
     delete_task = next(task for task in tasks if task["id"] == task_id)
     new_tasks = [task for task in tasks if task != delete_task]
-    save_tasks(new_tasks)
+    return new_tasks

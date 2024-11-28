@@ -25,39 +25,28 @@ def test_save_tasks():
         assert written_data == json.dumps(mock_data, indent=4)
 
 def test_add_task():
-    mock_tasks = [{"id":1, "description":"Mock Task"}]
-    with patch("project_plan_manager.plan_manager.load_tasks", side_effect=lambda: mock_tasks.copy()), \
-         patch("project_plan_manager.plan_manager.save_tasks", side_effect=lambda tasks: (mock_tasks.clear(), mock_tasks.extend(tasks))):
-        add_task("Test Task")
-        assert len(mock_tasks) == 2
-        assert mock_tasks[-1]['description'] == "Test Task"
+    modified_tasks = add_task(mock_data,"Test Task")
+    assert len(modified_tasks) == 2
+    assert modified_tasks[-1]['description'] == "Test Task"
 
 def test_cannot_add_empty_description_task():
-    with patch("project_plan_manager.plan_manager.load_tasks", return_value=[]), \
-         pytest.raises(InvalidTaskError):
-        add_task("")
+    with pytest.raises(InvalidTaskError):
+        add_task(mock_data,"")
         
 def test_cannot_add_null_task():
-    with patch("project_plan_manager.plan_manager.load_tasks", return_value=[]), pytest.raises(AssertionError):
-        add_task(None)
+    with pytest.raises(AssertionError):
+        add_task(mock_data,None)
     
 def test_added_tasks_default_to_backlog():
-    mock_tasks = []
-    with patch("project_plan_manager.plan_manager.load_tasks", side_effect=lambda: mock_tasks.copy()), \
-         patch("project_plan_manager.plan_manager.save_tasks", side_effect=lambda tasks: (mock_tasks.clear(), mock_tasks.extend(tasks))):
-        add_task("Test Task")
-        assert mock_tasks[-1]['status'] == "backlog"
+    modified_tasks = add_task(mock_data, "Test Task")
+    assert modified_tasks[-1]['status'] == "backlog"
 
 
 def test_delete_task():
-    mock_tasks = [{"id":1, "description":"Mock Task"}]
-    with patch("project_plan_manager.plan_manager.load_tasks", side_effect=lambda: mock_tasks), \
-         patch("project_plan_manager.plan_manager.save_tasks", side_effect=lambda tasks: (mock_tasks.clear(), mock_tasks.extend(tasks))):
-        task_id = mock_tasks[0]['id']
-        delete_task(task_id)
-        assert task_id not in [task['id'] for task in mock_tasks]
+    task_id = mock_data[0]['id']
+    modified_tasks = delete_task(mock_data, task_id)
+    assert task_id not in [task['id'] for task in modified_tasks]
 
 def test_cannot_delete_missing_task():
-    with patch("project_plan_manager.plan_manager.load_tasks", return_value=[]), \
-         pytest.raises(StopIteration):
-        delete_task(1)
+    with pytest.raises(StopIteration):
+        delete_task([],1)
