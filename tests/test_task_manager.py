@@ -3,11 +3,12 @@ import pytest
 import json
 import sys
 import os
-from project_plan_manager.plan_manager import load_tasks, save_tasks, add_task, delete_task, InvalidTaskError
+from project_plan_manager.plan_manager import load_tasks, save_tasks, add_task, delete_task, change_status, InvalidTaskError
 
 mock_data = [{
     "id":1,
-    "description": "Existing Task"
+    "description": "Existing Task",
+    "status": "backlog"
 }]
 
 def mock_json_data():
@@ -41,7 +42,6 @@ def test_added_tasks_default_to_backlog():
     modified_tasks = add_task(mock_data, "Test Task")
     assert modified_tasks[-1]['status'] == "backlog"
 
-
 def test_delete_task():
     task_id = mock_data[0]['id']
     modified_tasks = delete_task(mock_data, task_id)
@@ -50,3 +50,11 @@ def test_delete_task():
 def test_cannot_delete_missing_task():
     with pytest.raises(StopIteration):
         delete_task([],1)
+    
+def test_change_status():
+    modified_tasks = change_status(mock_data, 1, "inprogress") 
+    assert modified_tasks[0]['status'] == "inprogress"
+
+def test_cannot_change_status_missing_task():
+    with pytest.raises(StopIteration):
+        change_status(mock_data,2,"inprogress")

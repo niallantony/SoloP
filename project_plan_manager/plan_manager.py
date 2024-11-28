@@ -41,16 +41,25 @@ def add_task_to_file(tasks, description):
 def delete_task_to_file(tasks, task_id):
     return delete_task(tasks, task_id)
 
+@with_file
+def change_status_in_file(tasks, task_id, status):
+    return change_status(tasks, task_id, status)
+
 def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
-    print("Tasks:", tasks)
     if (len(description) == 0):
         raise InvalidTaskError("Invalid Task Description")
     new_task = Task(id=len(tasks)+1, description=description)
-    tasks.append(new_task.__dict__)
-    return tasks
+    new_tasks = tasks.copy()
+    new_tasks.append(new_task.__dict__)
+    return new_tasks
 
 def delete_task(tasks, task_id):
     delete_task = next(task for task in tasks if task["id"] == task_id)
     new_tasks = [task for task in tasks if task != delete_task]
     return new_tasks
+
+def change_status(tasks, task_id, status):
+    task = next(task for task in tasks if task['id'] == task_id)
+    tasks[tasks.index(task)]['status'] = status
+    return tasks
