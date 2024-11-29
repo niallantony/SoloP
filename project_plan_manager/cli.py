@@ -10,11 +10,27 @@ def main():
     args = parser.parse_args()
 
     if args.add:
-        change_file(add_task, args.add)
+        add(args.add)
     elif args.delete:
-        change_file(delete_task, args.delete)
+        delete(args.delete)
     elif args.status:
-        change_file(change_status, int(args.status[0]), args.status[1])
+        status(int(args.status[0]), args.status[1])
         
+def add(description):
+    change_file(add_task, description)
+    
+def delete(task_id):
+    try:
+        change_file(delete_task,task_id)
+    except (StopIteration):
+        print("Task not found")
+
+def status(task_id, status):
+    try:
+        change_file(change_status,task_id, status)
+    except (StopIteration):
+        print("Task not found")
+
+
 if __name__ == "__main__":
     main()

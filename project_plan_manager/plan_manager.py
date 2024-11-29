@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 
 class Task:
     def __init__(self, id, description, status="backlog") -> None:
@@ -20,30 +21,19 @@ def load_tasks():
             return json.load(f)
     except FileNotFoundError:
         return []
+    except JSONDecodeError:
+        return []
+
 
 def save_tasks(tasks):
     with open('tasks.json', 'w') as f:
         json.dump(tasks, f, indent=4)
 
-def with_file(func):
-    def wrapper(*args, **kwargs):
-        tasks = load_tasks()
-        modified = func(tasks, *args, *kwargs)
-        save_tasks(modified)
-        return modified
-    return wrapper
-
-@with_file
-def add_task_to_file(tasks, description):
-    return add_task(tasks, description)
-
-@with_file
-def delete_task_to_file(tasks, task_id):
-    return delete_task(tasks, task_id)
-
-@with_file
-def change_status_in_file(tasks, task_id, status):
-    return change_status(tasks, task_id, status)
+def change_file(action, *args, **kwargs):
+    tasks = load_tasks() or []
+    modified = action(tasks, *args, **kwargs)
+    save_tasks(modified)
+    return modified
 
 def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
