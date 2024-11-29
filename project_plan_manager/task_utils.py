@@ -1,10 +1,11 @@
-from project_plan_manager.file_utils import load_tasks
-
 class Task:
     def __init__(self, id, description, status="backlog") -> None:
         self.id = id
         self.description = description
         self.status = status
+    
+    def as_string(self):
+        return f"- [{self.id}]: {self.description}"
         
 class InvalidTaskError(Exception):
     """
@@ -30,6 +31,8 @@ def get_task(tasks, task_id):
 def get_of_status(tasks, status):
     of_status = []
     for task in tasks:
+        if "status" not in task.keys():
+            continue
         if task['status'] == status:
             of_status.append(as_task_object(task))
     return of_status
