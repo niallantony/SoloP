@@ -1,11 +1,13 @@
 from unittest.mock import patch
 import pytest
 from project_plan_manager.task_utils import (
+    Task,
     add_task, 
     delete_task, 
     change_status, 
     get_task, 
     get_of_status,
+    as_task_object,
     InvalidTaskError,
 )
 
@@ -68,18 +70,34 @@ def test_cannot_change_status_missing_task():
         change_status(mock_data,2,"in_progress")
 
 def test_get_task():
-    with patch("project_plan_manager.task_utils.load_tasks", return_value = mock_data.copy()):
-        task = get_task(1)
-        assert task['description'] == "Existing Task"
+    task = get_task(mock_data,1)
+    assert task.description == "Existing Task"
+    assert type(task) is Task
 
 def test_get_test_throws_missing_test():
-    with patch("project_plan_manager.task_utils.load_tasks", return_value=mock_data.copy()), \
-    pytest.raises(StopIteration):
-        task = get_task(2)
+    with pytest.raises(StopIteration):
+        task = get_task(mock_data, 2)
 
 def test_get_of_status():
-    with patch("project_plan_manager.task_utils.load_tasks", return_value=mock_data_extended.copy()):
-        backlog = get_of_status("backlog")
-        assert type(backlog) is list
-        assert len(backlog) == 2
+    backlog = get_of_status(mock_data_extended, "backlog")
+    assert type(backlog) is list
+    assert len(backlog) == 2
+    assert type(backlog[0]) is Task
+        
+def test_as_task_object():
+    task_object = as_task_object({"id":1, "description": "Test Task","status":"backlog"})
+    assert type(task_object) is Task
+
+def test_as_task_object_no_id():
+    with pytest.raises(KeyError):
+        task_object = as_task_object({"description": "Test Task","status":"backlog"})
+
+def test_as_task_object_no_description():
+    with pytest.raises(KeyError):
+        task_object = as_task_object({"id":1,"status":"backlog"})
+
+def test_as_task_object_no_status():
+    task_object = as_task_object({"id":1,"description": "Test Task"})
+    assert type(task_object) is Task
+    assert task_object.status == "backlog"
         

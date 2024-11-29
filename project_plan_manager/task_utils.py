@@ -14,17 +14,24 @@ class InvalidTaskError(Exception):
         self.message = message
         super().__init__(self.message)
 
-def get_task(task_id):
-    tasks = load_tasks()
-    task = next(task for task in tasks if task['id'] == task_id)
-    return task    
+def as_task_object(task):
+    """
+    Converts the dictionaries from JSON to Task objects
+    """
+    return Task(id = task['id'],
+                description= task['description'],
+                status=task.setdefault("status","backlog")
+                )
 
-def get_of_status(status):
-    tasks = load_tasks()
+def get_task(tasks, task_id):
+    task = next(task for task in tasks if task['id'] == task_id)
+    return as_task_object(task)
+
+def get_of_status(tasks, status):
     of_status = []
     for task in tasks:
         if task['status'] == status:
-            of_status.append(task)
+            of_status.append(as_task_object(task))
     return of_status
 
 def add_task(tasks, description):
