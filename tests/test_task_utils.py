@@ -83,6 +83,10 @@ def test_get_of_status():
     assert type(backlog) is list
     assert len(backlog) == 2
     assert type(backlog[0]) is Task
+
+def test_get_of_status_no_status():
+    empty_list = get_of_status([{"id":1, "description":"Test Task"}], "backlog")
+    assert len(empty_list) == 0
         
 def test_as_task_object():
     task_object = as_task_object({"id":1, "description": "Test Task","status":"backlog"})
@@ -101,3 +105,6 @@ def test_as_task_object_no_status():
     assert type(task_object) is Task
     assert task_object.status == "backlog"
         
+def test_task_as_string():
+    task_object = Task(id=1, description="Test Task")
+    assert task_object.as_string() == "- [1]: Test Task"

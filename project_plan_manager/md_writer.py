@@ -1,4 +1,4 @@
-from task_utils import (
+from project_plan_manager.task_utils import (
     get_of_status,
 )
 
@@ -14,18 +14,21 @@ class MDWriter:
         with open('SOLOP.md', 'w') as writer:
             writer.write(self.as_header(self.name))
             writer.write(self.__br())
-            backlog = self.list_with_header(self.backlog_tasks, "backlog")
+            backlog = self.format_list_with_header(self.backlog_tasks, "backlog")
             for line in backlog:
                 writer.write(line)
 
-
-    def list_with_header(self, tasks, header):
-        output = [(self.as_header(header, 2) + ":")]
-        output.append(self.__br())
-        for task in tasks:
-            output.append(task.as_string())
+    def format_list_with_header(self, items, header):
+        output = [(self.as_header(header, 2) + ': \n\n')]
+        output = output + self.format_as_list(items)
         return output
     
+    def format_as_list(self, items):
+        output = []
+        for item in items:
+            output.append(item.as_string() + '\n')
+        return output
+
     def __br(self):
         return "\n"
         
