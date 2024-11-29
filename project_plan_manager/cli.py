@@ -1,5 +1,6 @@
 import argparse
-from plan_manager import add_task, delete_task, change_file, change_status
+from task_utils import add_task, delete_task, change_status
+from file import change_file
 
 def main():
     parser = argparse.ArgumentParser(description="Task Manager")

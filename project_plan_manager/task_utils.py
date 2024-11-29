@@ -1,5 +1,4 @@
-import json
-from json import JSONDecodeError
+from project_plan_manager.file_utils import load_tasks
 
 class Task:
     def __init__(self, id, description, status="backlog") -> None:
@@ -15,25 +14,18 @@ class InvalidTaskError(Exception):
         self.message = message
         super().__init__(self.message)
 
-def load_tasks():
-    try:
-        with open('tasks.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-    except JSONDecodeError:
-        return []
+def get_task(task_id):
+    tasks = load_tasks()
+    task = next(task for task in tasks if task['id'] == task_id)
+    return task    
 
-
-def save_tasks(tasks):
-    with open('tasks.json', 'w') as f:
-        json.dump(tasks, f, indent=4)
-
-def change_file(action, *args, **kwargs):
-    tasks = load_tasks() or []
-    modified = action(tasks, *args, **kwargs)
-    save_tasks(modified)
-    return modified
+def get_of_status(status):
+    tasks = load_tasks()
+    of_status = []
+    for task in tasks:
+        if task['status'] == status:
+            of_status.append(task)
+    return of_status
 
 def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"

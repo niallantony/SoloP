@@ -1,29 +1,37 @@
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 import pytest
-import json
-import sys
-import os
-from project_plan_manager.plan_manager import load_tasks, save_tasks, add_task, delete_task, change_status, InvalidTaskError
+from project_plan_manager.task_utils import (
+    add_task, 
+    delete_task, 
+    change_status, 
+    get_task, 
+    get_of_status,
+    InvalidTaskError,
+)
 
-mock_data = [{
+mock_data = [
+{
     "id":1,
     "description": "Existing Task",
     "status": "backlog"
 }]
 
-def mock_json_data():
-    return json.dumps(mock_data)
-
-def test_load_tasks():
-    with patch("builtins.open", mock_open(read_data=mock_json_data())):
-        tasks = load_tasks()
-        assert tasks == mock_data
-
-def test_save_tasks():
-    with patch("builtins.open", mock_open()) as mock_file:
-        save_tasks(mock_data)
-        written_data = "".join(call.args[0] for call in mock_file().write.call_args_list)
-        assert written_data == json.dumps(mock_data, indent=4)
+mock_data_extended = [
+{
+    "id":1,
+    "description":"Backlog 1",
+    "status": "backlog"
+},
+{
+    "id":2,
+    "description":"Backlog 2",
+    "status": "backlog"
+},
+{
+    "id":3,
+    "description":"Progress 2",
+    "status": "in_progress"
+}]
 
 def test_add_task():
     modified_tasks = add_task(mock_data,"Test Task")
@@ -52,9 +60,26 @@ def test_cannot_delete_missing_task():
         delete_task([],1)
     
 def test_change_status():
-    modified_tasks = change_status(mock_data, 1, "inprogress") 
-    assert modified_tasks[0]['status'] == "inprogress"
+    modified_tasks = change_status(mock_data, 1, "in_progress") 
+    assert modified_tasks[0]['status'] == "in_progress"
 
 def test_cannot_change_status_missing_task():
     with pytest.raises(StopIteration):
-        change_status(mock_data,2,"inprogress")
+        change_status(mock_data,2,"in_progress")
+
+def test_get_task():
+    with patch("project_plan_manager.task_utils.load_tasks", return_value = mock_data.copy()):
+        task = get_task(1)
+        assert task['description'] == "Existing Task"
+
+def test_get_test_throws_missing_test():
+    with patch("project_plan_manager.task_utils.load_tasks", return_value=mock_data.copy()), \
+    pytest.raises(StopIteration):
+        task = get_task(2)
+
+def test_get_of_status():
+    with patch("project_plan_manager.task_utils.load_tasks", return_value=mock_data_extended.copy()):
+        backlog = get_of_status("backlog")
+        assert type(backlog) is list
+        assert len(backlog) == 2
+        
