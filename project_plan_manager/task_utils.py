@@ -1,8 +1,12 @@
+import re
+
 class Task:
-    def __init__(self, id, description, status="backlog") -> None:
+    def __init__(self, id, description, status="backlog", parent=None) -> None:
         self.id = id
         self.description = description
         self.status = status
+        self.children = []
+        self.parent = parent
     
     def as_string(self):
         return f"- [{self.id}]: {self.description}"
@@ -41,6 +45,9 @@ def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
     if (len(description) == 0):
         raise InvalidTaskError("Invalid Task Description")
+    newlines = re.findall("^", description, flags=re.M)
+    if len(newlines) > 1:
+        raise InvalidTaskError("Multi-line tasks not supported")
     new_task = Task(id=len(tasks)+1, description=description)
     new_tasks = tasks.copy()
     new_tasks.append(new_task.__dict__)

@@ -52,6 +52,10 @@ def test_added_tasks_default_to_backlog():
     modified_tasks = add_task(mock_data, "Test Task")
     assert modified_tasks[-1]['status'] == "backlog"
 
+def test_add_task_with_newline():
+    with pytest.raises(InvalidTaskError):
+        add_task(mock_data, "Task with new line \n")
+
 def test_delete_task():
     task_id = mock_data[0]['id']
     modified_tasks = delete_task(mock_data, task_id)
@@ -108,3 +112,4 @@ def test_as_task_object_no_status():
 def test_task_as_string():
     task_object = Task(id=1, description="Test Task")
     assert task_object.as_string() == "- [1]: Test Task"
+
