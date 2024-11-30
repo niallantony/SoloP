@@ -7,6 +7,7 @@ from project_plan_manager.task_utils import (
     change_status, 
     get_task, 
     get_of_status,
+    get_status_list,
     as_task_object,
     InvalidTaskError,
 )
@@ -78,7 +79,7 @@ def test_get_task():
     assert task.description == "Existing Task"
     assert type(task) is Task
 
-def test_get_test_throws_missing_test():
+def test_get_task_throws_missing_task():
     with pytest.raises(StopIteration):
         task = get_task(mock_data, 2)
 
@@ -92,6 +93,19 @@ def test_get_of_status_no_status():
     empty_list = get_of_status([{"id":1, "description":"Test Task"}], "backlog")
     assert len(empty_list) == 0
         
+@pytest.mark.parametrize("values,length,expected",
+    [
+        pytest.param([{"status":"backlog"}], 1, ["backlog"], id="one item"),
+        pytest.param([{"status":"backlog"}, {"status":"backlog"},{"status":"backlog"}], 1, ["backlog"], id="three items, same status"),
+        pytest.param([{"status":"backlog"},{"status":"done"},{"status":"done"}], 2, ["backlog","done"], id="three items, two statuses"),
+    ]
+)
+def test_get_status_list(values,length,expected):
+    statuses = get_status_list(values)
+    assert len(statuses) == length
+    assert statuses == expected
+
+
 def test_as_task_object():
     task_object = as_task_object({"id":1, "description": "Test Task","status":"backlog"})
     assert type(task_object) is Task

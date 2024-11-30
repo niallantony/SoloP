@@ -15,7 +15,7 @@ def main():
     parser.add_argument('--add', type=str, help="Add a new task")
     parser.add_argument('--delete', type=int, help="Delete a task by ID")
     parser.add_argument('--status', nargs=2, help="Change a status message, takes an ID and new status")
-    parser.add_argument('--make', action="store_true", help="Builds a Markdown file of tasks")
+    parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
 
     args = parser.parse_args()
@@ -29,7 +29,7 @@ def main():
     elif args.rename:
         rename(args.rename)
     
-    if args.make:
+    if args.xmake:
         make()
         
 def make():

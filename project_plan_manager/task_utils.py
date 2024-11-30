@@ -41,6 +41,12 @@ def get_of_status(tasks, status):
             of_status.append(as_task_object(task))
     return of_status
 
+def get_status_list(tasks):
+    status_list = dict()
+    for task in tasks:
+        status_list[task["status"]] = task
+    return status_list.keys()
+
 def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
     if (len(description) == 0):
