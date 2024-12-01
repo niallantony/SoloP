@@ -4,14 +4,12 @@
 
 - [1]: Make interactive client
 - [2]: Implement nested tasks
-- [5]: Implement priority levels
 - [6]: Implement dependencies
-- [7]: Allow importing
-- [8]: Implement milestones
-- [9]: Implement versioning/releases
 - [10]: Implement Pull from MD command
 - [14]: Sort section headings in meaningful way (in progress not after Done etc...)
 - [16]: Decorations for BUG, TEST, etc...
+- [18]: Generate package
+- [19]: TEST: CLI interface commands
 
 ## DONE: 
 
@@ -21,5 +19,18 @@
 - [12]: Throw meaningful exceptions for mismatched arguments - CLI
 - [13]: Parse CLI args in a more loosely coupled way
 - [15]: BUG: case sensitivity in status messages
+- [20]: CLI interface accepts multiple arguments
+
+## IN PROGRESS: 
+
+- [5]: Implement priority levels
+
+## NEXT ITERATION: 
+
+- [7]: Allow importing
+- [8]: Implement milestones
+- [9]: Implement versioning/releases
+- [17]: Add git commit hooks
+- [21]: Git Branch hook for in progress
 
 This document was generated with SoloP

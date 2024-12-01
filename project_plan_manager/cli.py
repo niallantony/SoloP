@@ -13,13 +13,12 @@ from project_plan_manager.md_writer import (
 def main():
     parser = argparse.ArgumentParser(description="Task Manager")
     parser.add_argument('--add', type=str, help="Add a new task")
-    parser.add_argument('--delete', type=int, help="Delete a task by ID")
-    parser.add_argument('--status', nargs=2, help="Change a status message, takes an ID and new status")
+    parser.add_argument('--delete', nargs='+', help="Delete a task by ID")
+    parser.add_argument('--status', nargs='*', help="Change a status message, takes an ID and new status")
     parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
 
     args = parser.parse_args()
-    print(vars(args))
     executer = CommandExecuter(args)
     executer.execute_commands()
 
@@ -39,7 +38,6 @@ class CommandExecuter:
         flags = passed.keys()
         for flag in flags:
             if not passed[flag]:
-                print(f"Didn't execute {flag}")
                 continue
             self.actions[flag](passed[flag])
 
@@ -54,9 +52,11 @@ class CommandExecuter:
     def add(self,description):
         change_tasks(add_task, description)
         
-    def delete(self,task_id):
+    def delete(self,args):
         try:
-            change_tasks(delete_task,task_id)
+            args = self.as_ints(args) 
+            for task_id in args:
+                change_tasks(delete_task,task_id)
         except (StopIteration):
             print("Task not found")
 
@@ -67,9 +67,6 @@ class CommandExecuter:
         try:
             args = self.as_ints(args)
             for id in args:
-                
-                id = int(id)
-                print(id)
                 change_tasks(change_status,id, status_message)
         except (StopIteration):
             print("Task not found")
