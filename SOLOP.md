@@ -22,3 +22,4 @@
 - [13]: Parse CLI args in a more loosely coupled way
 - [15]: BUG: case sensitivity in status messages
 
+This document was generated with SoloP

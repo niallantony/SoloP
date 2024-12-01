@@ -23,6 +23,7 @@ class MDWriter:
                 for line in section:
                     writer.write(line)
                 writer.write(self.__br(1))
+            writer.write("This document was generated with SoloP")
 
     def format_list_with_header(self, items, header):
         output = [(self.as_header(header, 2) + ': \n\n')]
