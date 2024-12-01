@@ -19,41 +19,72 @@ def main():
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
 
     args = parser.parse_args()
+    print(vars(args))
+    executer = CommandExecuter(args)
+    executer.execute_commands()
 
-    if args.add:
-        add(args.add)
-    elif args.delete:
-        delete(args.delete)
-    elif args.status:
-        status(int(args.status[0]), args.status[1])
-    elif args.rename:
-        rename(args.rename)
-    
-    if args.xmake:
-        make()
+class CommandExecuter:
+    def __init__(self, args):
+        self.args = args
+        self.actions = {
+            'xmake':self.make, "'xmake' by default is true, calling xmake won't run make"
+            'rename':self.rename,
+            'add':self.add,
+            'delete':self.delete,
+            'status':self.status,
+        }
+
+    def execute_commands(self):
+        passed = vars(self.args)
+        flags = passed.keys()
+        for flag in flags:
+            if not passed[flag]:
+                print(f"Didn't execute {flag}")
+                continue
+            self.actions[flag](passed[flag])
+
+    def make(self, _):
+        file = load_file()
+        writer = MDWriter(file['project'], file['tasks'])
+        writer.write_md_file()
+
+    def rename(self,name):
+        change_meta('project', name)
+
+    def add(self,description):
+        change_tasks(add_task, description)
         
-def make():
-    file = load_file()
-    writer = MDWriter(file['project'], file['tasks'])
-    writer.write_md_file()
+    def delete(self,task_id):
+        try:
+            change_tasks(delete_task,task_id)
+        except (StopIteration):
+            print("Task not found")
 
-def rename(name):
-    change_meta('project', name)
-
-def add(description):
-    change_tasks(add_task, description)
+    def status(self, args):
+        status_message = args.pop(0)
+        if len(args) == 0:
+            print("--status expects 1+ arguments for IDs")
+        try:
+            args = self.as_ints(args)
+            for id in args:
+                
+                id = int(id)
+                print(id)
+                change_tasks(change_status,id, status_message)
+        except (StopIteration):
+            print("Task not found")
+        except (ValueError):
+            print("Please supply IDs as Integers")
     
-def delete(task_id):
-    try:
-        change_tasks(delete_task,task_id)
-    except (StopIteration):
-        print("Task not found")
-
-def status(task_id, status):
-    try:
-        change_tasks(change_status,task_id, status)
-    except (StopIteration):
-        print("Task not found")
+    def as_ints(self, list):
+        newlist = []
+        for element in list:
+            try:
+                element = int(element)
+                newlist.append(element)
+            except (ValueError):
+                raise ValueError
+        return newlist
 
 
 if __name__ == "__main__":

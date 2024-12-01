@@ -66,9 +66,17 @@ def test_cannot_delete_missing_task():
     with pytest.raises(StopIteration):
         delete_task([],1)
     
-def test_change_status():
-    modified_tasks = change_status(mock_data, 1, "in_progress") 
-    assert modified_tasks[0]['status'] == "in_progress"
+@pytest.mark.parametrize("new, expected", 
+    [
+        pytest.param("in_progress", "in_progress", id="changes simple"),
+        pytest.param("Done", "done", id="change is case insensitive"),
+        pytest.param("in progress", "in_progress", id="deals with whitespace"),
+    ]
+)
+def test_change_status(new, expected):
+    modified_tasks = change_status(mock_data.copy(), 1, new) 
+    assert modified_tasks[0]['status'] == expected
+
 
 def test_cannot_change_status_missing_task():
     with pytest.raises(StopIteration):

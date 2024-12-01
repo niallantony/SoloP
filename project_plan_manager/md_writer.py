@@ -18,7 +18,8 @@ class MDWriter:
             writer.write(self.__br(2))
             statuses = get_status_list(self.tasks)
             for status in statuses:
-                section = self.format_list_with_header(get_of_status(self.tasks, status),status)
+                tasks = get_of_status(self.tasks, status)
+                section = self.format_list_with_header(tasks,status)
                 for line in section:
                     writer.write(line)
                 writer.write(self.__br(1))

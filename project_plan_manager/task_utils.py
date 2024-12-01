@@ -45,7 +45,7 @@ def get_status_list(tasks):
     status_list = dict()
     for task in tasks:
         status_list[task["status"]] = task
-    return status_list.keys()
+    return [*status_list.keys()]
 
 def add_task(tasks, description):
     assert isinstance(description, str), f"Expected a string, got {type(description).__name__}"
@@ -66,5 +66,5 @@ def delete_task(tasks, task_id):
 
 def change_status(tasks, task_id, status):
     task = next(task for task in tasks if task['id'] == task_id)
-    tasks[tasks.index(task)]['status'] = status
+    tasks[tasks.index(task)]['status'] = re.sub(r'\s', '_', status.lower())
     return tasks
