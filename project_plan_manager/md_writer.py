@@ -1,7 +1,9 @@
 import re
 from project_plan_manager.task_utils import (
     get_of_status,
+    sort_tasks,
     get_status_list,
+    as_task_object,
 )
 
 class MDWriter:
@@ -18,12 +20,19 @@ class MDWriter:
             writer.write(self.__br(2))
             statuses = get_status_list(self.tasks)
             for status in statuses:
-                tasks = get_of_status(self.tasks, status)
-                section = self.format_list_with_header(tasks,status)
-                for line in section:
-                    writer.write(line)
-                writer.write(self.__br(1))
+                lines = self.format_section(status)
+                writer.writelines(lines)
             writer.write("This document was generated with SoloP")
+    
+    def format_section(self, status):
+        lines = []
+        tasks = get_of_status(self.tasks, status)
+        tasks = sort_tasks(tasks, "priority")
+        section = self.format_list_with_header(tasks, status)
+        for line in section:
+            lines.append(line)
+        lines.append(self.__br(1))
+        return lines
 
     def format_list_with_header(self, items, header):
         output = [(self.as_header(header, 2) + ': \n\n')]
@@ -33,6 +42,7 @@ class MDWriter:
     def format_as_list(self, items):
         output = []
         for item in items:
+            item = as_task_object(item)
             output.append(item.as_string() + '\n')
         return output
 

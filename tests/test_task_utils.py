@@ -1,16 +1,6 @@
 from unittest.mock import patch
 import pytest
-from project_plan_manager.task_utils import (
-    Task,
-    add_task, 
-    delete_task, 
-    change_status, 
-    get_task, 
-    get_of_status,
-    get_status_list,
-    as_task_object,
-    InvalidTaskError,
-)
+from project_plan_manager.task_utils import *
 
 mock_data = [
 {
@@ -28,7 +18,8 @@ mock_data_extended = [
 {
     "id":2,
     "description":"Backlog 2",
-    "status": "backlog"
+    "status": "backlog",
+    "priority":1
 },
 {
     "id":3,
@@ -95,7 +86,6 @@ def test_get_of_status():
     backlog = get_of_status(mock_data_extended, "backlog")
     assert type(backlog) is list
     assert len(backlog) == 2
-    assert type(backlog[0]) is Task
 
 def test_get_of_status_no_status():
     empty_list = get_of_status([{"id":1, "description":"Test Task"}], "backlog")
@@ -135,3 +125,22 @@ def test_task_as_string():
     task_object = Task(id=1, description="Test Task")
     assert task_object.as_string() == "- [1]: Test Task"
 
+def test_change_priority_not_found():
+    with pytest.raises(StopIteration):
+        change_priority(mock_data,2,2)
+
+def test_change_priority():
+    newtasks = change_priority(mock_data_extended.copy(),1,3)
+    print(newtasks)
+    assert newtasks[0]['priority'] == 3
+
+@pytest.mark.parametrize("given, attr, expected", [
+    pytest.param([{"a":3},{"a":2},{"a":1}],"a",[{"a":1},{"a":2},{"a":3}], id="sort attr present"),
+    pytest.param([{"a":1}],"a",[{"a":1}], id="sort one attr present"),
+    pytest.param([{"a":1}],"b",[{"a":1}], id="sort one attr missing"),
+    pytest.param([{"a":3},{"a":2},{"a":1}],"b",[{"a":3},{"a":2},{"a":1}], id="sort many, attr missing"),
+]
+)
+def test_sort_tasks(given, attr, expected):
+    sorted = sort_tasks(given, attr)
+    assert sorted == expected

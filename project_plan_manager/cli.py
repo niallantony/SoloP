@@ -1,5 +1,5 @@
 import argparse
-from project_plan_manager.task_utils import add_task, delete_task, change_status
+from project_plan_manager.task_utils import add_task, delete_task, change_status, change_priority
 from project_plan_manager.file_utils import (
     change_tasks,
     load_tasks,
@@ -15,10 +15,12 @@ def main():
     parser.add_argument('--add', type=str, help="Add a new task")
     parser.add_argument('--delete', nargs='+', help="Delete a task by ID")
     parser.add_argument('--status', nargs='*', help="Change a status message, takes an ID and new status")
-    parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
+    parser.add_argument('--priority', nargs='*', help="Changes the priority of tasks to the first given argument")
+    parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
 
     args = parser.parse_args()
+    print(args)
     executer = CommandExecuter(args)
     executer.execute_commands()
 
@@ -31,6 +33,7 @@ class CommandExecuter:
             'add':self.add,
             'delete':self.delete,
             'status':self.status,
+            'priority':self.priority
         }
 
     def execute_commands(self):
@@ -82,6 +85,16 @@ class CommandExecuter:
             except (ValueError):
                 raise ValueError
         return newlist
+    
+    def priority(self, args):
+        try:
+            args = self.as_ints(args)
+            priority = args.pop(0)
+            for id in args:
+                change_tasks(change_priority, id, priority)
+        except (ValueError):
+            print("Provide a list of IDs as ints only")
+
 
 
 if __name__ == "__main__":

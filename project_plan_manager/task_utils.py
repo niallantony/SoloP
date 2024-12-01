@@ -1,15 +1,16 @@
 import re
 
 class Task:
-    def __init__(self, id, description, status="backlog", parent=None) -> None:
+    def __init__(self, id, description, status="backlog", children=[], parent=None, priority=1) -> None:
         self.id = id
         self.description = description
         self.status = status
-        self.children = []
+        self.priority = priority
+        self.children = children
         self.parent = parent
     
     def as_string(self):
-        return f"- [{self.id}]: {self.description}"
+        return f"- [{self.id}]: {self.description} [Priority: {self.priority}]"
         
 class InvalidTaskError(Exception):
     """
@@ -25,7 +26,10 @@ def as_task_object(task):
     """
     return Task(id = task['id'],
                 description= task['description'],
-                status=task.setdefault("status","backlog")
+                status=task.setdefault("status","backlog"),
+                priority=task.setdefault("priority",1),
+                children=task.setdefault("children",[]),
+                parent=task.setdefault("parent",None)
                 )
 
 def get_task(tasks, task_id):
@@ -38,7 +42,7 @@ def get_of_status(tasks, status):
         if "status" not in task.keys():
             continue
         if task['status'] == status:
-            of_status.append(as_task_object(task))
+            of_status.append(task)
     return of_status
 
 def get_status_list(tasks):
@@ -68,3 +72,51 @@ def change_status(tasks, task_id, status):
     task = next(task for task in tasks if task['id'] == task_id)
     tasks[tasks.index(task)]['status'] = re.sub(r'\s', '_', status.lower())
     return tasks
+
+def change_priority(tasks, task_id, priority):
+    assert isinstance(priority, int), f"Expected an int, got {type(priority).__name__}"
+    task = next(task for task in tasks if task['id'] == task_id)
+    tasks[tasks.index(task)]['priority'] = priority
+    return tasks
+    
+def sort_tasks(tasks, attr):
+    if len(tasks) <= 1:
+        return tasks
+    mid = len(tasks) // 2
+    left = tasks[:mid]
+    right = tasks[mid:]
+
+    left = sort_tasks(left, attr)
+    right = sort_tasks(right, attr)
+
+    return _merge(left, right, attr)
+
+def _merge(left, right, attr):
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        leftsort = rightsort = 0
+        if attr not in left[i]:
+            leftsort = 1
+        else:
+            leftsort = left[i][attr]
+        if attr not in right[j]:
+            rightsort = 1
+        else:
+            rightsort = right[j][attr]
+        if leftsort <= rightsort:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+    while j < len(right):
+        result.append(right[j])
+        j += 1
+    
+    return result
+ 
