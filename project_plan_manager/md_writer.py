@@ -4,58 +4,103 @@ from project_plan_manager.task_utils import (
     sort_tasks,
     get_status_list,
     as_task_object,
+    get_task,
+    get_task_object
 )
+
+def _br(number):
+    output = ""
+    for n in range(number):
+        output = output + "\n"
+    return output
+
+def _ind(number):
+    output = ""
+    for n in range(number):
+        output = output + "\t"
+    return output
+
+def as_header(header, level=1):
+    output = ""
+    for x in range(level):
+        output = output + "#"
+    header = re.sub(r"_", " ", header)
+    output = output + " " + header.upper()
+    return output
 
 class MDWriter:
     def __init__(self, name, tasks):
         self.name = name
         self.tasks = tasks
-        self.backlog_tasks = get_of_status(tasks, "backlog")
-        self.in_progress_tasks = get_of_status(tasks, "in_progress")
-        self.done_tasks = get_of_status(tasks, "done")
 
     def write_md_file(self):
         with open('SOLOP.md', 'w') as writer:
-            writer.write(self.as_header(self.name))
-            writer.write(self.__br(2))
+            writer.write(as_header(self.name))
+            writer.write(_br(2))
             statuses = get_status_list(self.tasks)
             for status in statuses:
-                lines = self.format_section(status)
-                writer.writelines(lines)
+                tasks = get_of_status(self.tasks, status)
+                section = Section(status, tasks)
+                lines = section.render_section()
+                for line in lines:
+                    writer.write(line + "\n")
+                writer.write(_br(1))
             writer.write("This document was generated with SoloP")
+            
+       
+class Section:
+    def __init__(self, header, tasks):
+        self.header = header
+        self.tasks = tasks
+        self.layout = self.get_layout(tasks)
+
+    def get_layout(self, tasks):
+        layout_map = {}
+        for task in tasks:
+            if len(task.setdefault('parent',[])) == 0:
+                layout_map[str(task['id'])] = self.get_children(task['id'])
+        return layout_map
     
-    def format_section(self, status):
+    def get_children(self, id):
+        output = [] 
+        task = get_task(self.tasks, id)
+        if len(task.setdefault("children",[])) > 0:
+            children = {}
+            for child in task['children']:
+                children[str(child)] = self.get_children(child)
+            output.append(children)
+        return output
+
+    def render_section(self):
         lines = []
-        tasks = get_of_status(self.tasks, status)
-        tasks = sort_tasks(tasks, "priority")
-        section = self.format_list_with_header(tasks, status)
-        for line in section:
-            lines.append(line)
-        lines.append(self.__br(1))
+        lines.append(as_header(self.header, 2) + ":\n")
+        lines.extend(self.render_tier(self.layout, 0))
         return lines
 
-    def format_list_with_header(self, items, header):
-        output = [(self.as_header(header, 2) + ': \n\n')]
-        output = output + self.format_as_list(items)
-        return output
-    
-    def format_as_list(self, items):
-        output = []
-        for item in items:
-            item = as_task_object(item)
-            output.append(item.as_string() + '\n')
-        return output
+    def get_tier_priority_order(self, tier):
+        tasks = []
+        for id in tier:
+            task = get_task(self.tasks, int(id))
+            tasks.append(task)
+            
+        tasks = sort_tasks(tasks, "priority")
+        order = []
+        for task in tasks:
+            order.append(task['id'])
+        return order
 
-    def __br(self, number):
-        output = ""
-        for n in range(number):
-            output = output + "\n"
-        return output
-        
-    def as_header(self, header, level=1):
-        output = ""
-        for x in range(level):
-            output = output + "#"
-        header = re.sub(r"_", " ", header)
-        output = output + " " + header.upper()
-        return output
+    def render_tier(self, tier, level):
+        tier_strings = []
+        task_ids = tier.keys()
+        order = self.get_tier_priority_order(task_ids)
+        for id in order:
+            task = get_task_object(self.tasks, id)
+            tier_strings.append(_ind(level) + task.as_string())
+            # if len(task.children) > 0:
+            #     nested_strings = self.render_tier(tier[id][0], level+1)
+            #     tier_strings.extend(nested_strings)
+            if len(tier[str(id)]) > 0:
+                nested_strings = self.render_tier(tier[str(id)][0], level+1)
+                tier_strings.extend(nested_strings)
+        return tier_strings
+

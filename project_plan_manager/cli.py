@@ -1,5 +1,12 @@
 import argparse
-from project_plan_manager.task_utils import add_task, delete_task, change_status, change_priority
+from project_plan_manager.task_utils import (
+    add_task,
+    delete_task, 
+    change_status, 
+    change_priority, 
+    set_as_child, 
+    unset_as_child
+)
 from project_plan_manager.file_utils import (
     change_tasks,
     load_tasks,
@@ -17,10 +24,12 @@ def main():
     parser.add_argument('--status', nargs='*', help="Change a status message, takes an ID and new status")
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
     parser.add_argument('--priority', nargs='*', help="Changes the priority of tasks to the first given argument")
+    parser.add_argument('--child', nargs=2, help="Sets the first arg as the child of the second arg")
+    parser.add_argument('--xchild', nargs=1, type=int, help="Un-nest a task from any parents")
+    parser.add_argument('--inherit', action="store_true", help="Inherit mode attaches nested tasks to the parent task when unattaching a child")
     parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
 
     args = parser.parse_args()
-    print(args)
     executer = CommandExecuter(args)
     executer.execute_commands()
 
@@ -33,7 +42,10 @@ class CommandExecuter:
             'add':self.add,
             'delete':self.delete,
             'status':self.status,
-            'priority':self.priority
+            'child':self.child,
+            'xchild':self.xchild,
+            'priority':self.priority,
+            'inherit':self.inherit,
         }
 
     def execute_commands(self):
@@ -48,6 +60,9 @@ class CommandExecuter:
         file = load_file()
         writer = MDWriter(file['project'], file['tasks'])
         writer.write_md_file()
+    
+    def inherit(self, _):
+        pass
 
     def rename(self,name):
         change_meta('project', name)
@@ -94,7 +109,24 @@ class CommandExecuter:
                 change_tasks(change_priority, id, priority)
         except (ValueError):
             print("Provide a list of IDs as ints only")
-
+    
+    def child(self, args):
+        try:
+            child_id = int(args[0])
+            parent_id = int(args[1])
+            change_tasks(set_as_child, child_id, parent_id)
+        except (StopIteration):
+            print("Tasks not found")
+        except (ValueError):
+            print("Please input IDs as ints only")
+    
+    def xchild(self, args):
+        try:
+            change_tasks(unset_as_child, args[0], self.args.inherit)
+        except (StopIteration):
+            print("Task not found")
+        except (ValueError):
+            print("Not a nested task")
 
 
 if __name__ == "__main__":
