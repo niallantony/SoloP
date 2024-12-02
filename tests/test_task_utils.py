@@ -98,8 +98,6 @@ def test_delete_nested_task(delete, expected):
         assert task['parent'] == expected[task['id']][0] 
         assert task['children'] == expected[task['id']][1] 
     
-    
-
 def test_cannot_delete_missing_task():
     with pytest.raises(StopIteration):
         delete_task([],1)

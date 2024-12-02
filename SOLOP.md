@@ -3,12 +3,14 @@
 ## BACKLOG:
 
 - [1]: Make interactive client
-- [16]: Decorations for BUG, TEST, etc...
 - [18]: Generate package
 - [19]: TEST: CLI interface commands
 - [22]: Refactor MD sections as objects to allow easier nesting
 - [29]: Add guards against duplicate IDs
+- [35]: Add confirmation for deletion
+- [37]: TEST: parentless task visibility
 - [27]: Improve MD doc formatting
+	- [16]: Decorations for BUG, TEST, etc...
 - [6]: Implement dependencies
 - [14]: Sort section headings in meaningful way (in progress not after Done etc...)
 
@@ -24,6 +26,7 @@
 - [15]: BUG: case sensitivity in status messages
 - [20]: CLI interface accepts multiple arguments
 - [26]: BUG: duplicate IDs? (Problem with nesting?)
+- [30]: BUG: Nested tasks in different sections
 - [31]: TEST: unchild action
 - [32]: Delete task, move children to new parent
 - [4]: Implement custom headers
@@ -37,6 +40,7 @@
 - [21]: Git Branch hook for in progress
 - [33]: Add timestamps
 - [34]: Add metrics (e.g. 'Done today')
+- [36]: Add archiving
 - [7]: Allow importing
 - [23]: Add config file for priority labels
 - [24]: Add config file for visibility options
@@ -44,9 +48,5 @@
 ## LATER:
 
 - [25]: Add recommended next task
-
-## IN PROGRESS:
-
-- [30]: BUG: Nested tasks in different sections
 
 This document was generated with SoloP

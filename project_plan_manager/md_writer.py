@@ -52,14 +52,23 @@ class Section:
     def __init__(self, header, tasks):
         self.header = header
         self.tasks = tasks
+        self.ids = self.get_ids(tasks)
         self.layout = self.get_layout(tasks)
 
     def get_layout(self, tasks):
         layout_map = {}
         for task in tasks:
-            if len(task.setdefault('parent',[])) == 0:
+            if len(task.setdefault('parent',[])) == 0 or (set(task.setdefault('parent',[])).isdisjoint(self.ids)):
+
                 layout_map[str(task['id'])] = self.get_children(task['id'])
         return layout_map
+    
+    def get_ids(self, tasks):
+        ids = set({})
+        for task in tasks:
+            ids.add(task['id'])
+        return ids
+            
     
     def get_children(self, id):
         output = [] 
@@ -67,7 +76,10 @@ class Section:
         if len(task.setdefault("children",[])) > 0:
             children = {}
             for child in task['children']:
-                children[str(child)] = self.get_children(child)
+                try:    
+                    children[str(child)] = self.get_children(child)
+                except(StopIteration):
+                    continue
             output.append(children)
         return output
 
@@ -82,7 +94,6 @@ class Section:
         for id in tier:
             task = get_task(self.tasks, int(id))
             tasks.append(task)
-            
         tasks = sort_tasks(tasks, "priority")
         order = []
         for task in tasks:
@@ -96,9 +107,6 @@ class Section:
         for id in order:
             task = get_task_object(self.tasks, id)
             tier_strings.append(_ind(level) + task.as_string())
-            # if len(task.children) > 0:
-            #     nested_strings = self.render_tier(tier[id][0], level+1)
-            #     tier_strings.extend(nested_strings)
             if len(tier[str(id)]) > 0:
                 nested_strings = self.render_tier(tier[str(id)][0], level+1)
                 tier_strings.extend(nested_strings)
