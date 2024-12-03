@@ -4,7 +4,28 @@ SoloP will be a tool that can be used to manage a Solo Developers tasks when wor
  
 Current Version: Version 1.0.0
 
- ## Using SoloP
+## Example
+
+Using SoloP will help you automatically manage a `SOLOP.md` file:
+
+SOLOP.md:
+```md
+# PROJECT NAME
+
+## BACKLOG
+
+- [1]: Task to do
+
+## IN PROGRESS
+
+- [2]: Task currently in progress
+
+## DONE
+
+- [3]: Task completed
+```
+
+## Using SoloP
 
 As of Version 1 *SoloP* is only accessible by the CLI. Tasks can be added, deleted and managed by executing `solop` from the command line.
 
