@@ -51,7 +51,6 @@ class CommandExecuter:
         for flag in flags:
             if not args[flag] or isinstance(args[flag], bool):
                 continue
-            print(f"Calling {flag}:", self.actions[flag])
             self.actions[flag](args)
         if not args['xmake']:
             self.make(args)
