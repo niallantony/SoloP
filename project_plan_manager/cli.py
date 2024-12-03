@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--xchild', nargs=1, type=int, help="Un-nest a task from any parents")
     parser.add_argument('--inherit', action="store_true", help="Inherit mode attaches nested tasks to the parent task when unattaching a child")
     parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
+    parser.add_argument('--all', action="store_true", help="Include to render all tasks to document regardless of given headers")
 
     args = parser.parse_args()
     executer = CommandExecuter(args)
@@ -37,7 +38,7 @@ class CommandExecuter:
     def __init__(self, args):
         self.args = args
         self.actions = {
-            'xmake':self.make, "'xmake' by default is true, calling xmake won't run make"
+            'xmake':self.make, #'xmake' by default is true, calling xmake won't run make
             'rename':self.rename,
             'add':self.add,
             'delete':self.delete,
@@ -46,6 +47,7 @@ class CommandExecuter:
             'xchild':self.xchild,
             'priority':self.priority,
             'inherit':self.inherit,
+            'all':self.all,
         }
 
     def execute_commands(self):
@@ -58,10 +60,13 @@ class CommandExecuter:
 
     def make(self, _):
         file = load_file()
-        writer = MDWriter(file['project'], file['tasks'])
-        writer.write_md_file()
+        writer = MDWriter(file['project'], file['tasks'], file['headers'])
+        writer.write_md_file(render_all=self.args.all)
     
     def inherit(self, _):
+        pass
+
+    def all(self, _):
         pass
 
     def rename(self,name):

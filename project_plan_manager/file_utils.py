@@ -49,5 +49,6 @@ def new_file_format():
     return dict({
         "project":"Project",
         "tasks":[],
+        "headers":["backlog","in_progress","done"]
         })
 

@@ -29,15 +29,19 @@ def as_header(header, level=1):
     return output
 
 class MDWriter:
-    def __init__(self, name, tasks):
+    def __init__(self, name, tasks, headers):
         self.name = name
         self.tasks = tasks
+        self.headers = headers
 
-    def write_md_file(self):
+    def write_md_file(self, render_all=False):
         with open('SOLOP.md', 'w') as writer:
             writer.write(as_header(self.name))
             writer.write(_br(2))
-            statuses = get_status_list(self.tasks)
+            if render_all:
+                statuses = self.extend_headers()
+            else:
+                statuses = self.headers
             for status in statuses:
                 tasks = get_of_status(self.tasks, status)
                 section = Section(status, tasks)
@@ -47,6 +51,14 @@ class MDWriter:
                 writer.write(_br(1))
             writer.write("This document was generated with SoloP")
             
+    def extend_headers(self):
+        all_headers = get_status_list(self.tasks)
+        extended_headers = self.headers.copy()
+        for header in all_headers:
+            if header not in self.headers:
+                extended_headers.append(header)
+        return extended_headers
+
        
 class Section:
     def __init__(self, header, tasks):
