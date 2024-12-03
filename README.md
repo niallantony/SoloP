@@ -29,6 +29,11 @@ SOLOP.md:
 
 As of Version 1 *SoloP* is only accessible by the CLI. Tasks can be added, deleted and managed by executing `solop` from the command line.
 
+### Installation
+
+Install `solop` using `pip install solop`.
+Find the package at the following URL: [PyPI page for SoloP](https://pypi.org/project/solop/)
+
 ### Actions
 
 Calling `solop` with no flags will update the `SOLOP.md` file with any unsaved changes.
