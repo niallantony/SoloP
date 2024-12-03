@@ -31,7 +31,10 @@ As of Version 1 *SoloP* is only accessible by the CLI. Tasks can be added, delet
 
 ### Installation
 
-Install `solop` using `pip install solop`.
+Install `solop` using 
+```bash
+pip install solop
+```
 Find the package at the following URL: [PyPI page for SoloP](https://pypi.org/project/solop/)
 
 ### Actions
