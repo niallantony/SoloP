@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import patch
+import copy
 
 from project_plan_manager.task_utils import (
     Task,
@@ -35,6 +36,15 @@ mock_tree = [
     {"id":5, "description":"Task 5", "priority":2, "parent":[2], "children": [6,3]},
     {"id":6, "description":"Task 6", "priority":1, "parent":[5], "children": []},
 ]
+
+mock_tree_orphaned = copy.deepcopy(mock_tree)
+mock_tree_orphaned.append({
+    "id":7,
+    "description":"Orphaned Task",
+    "priority":1,
+    "parent":[8],
+    "children":[]
+})
 
 mock_layout = {
     "1":[],
@@ -94,3 +104,10 @@ def test_render_section():
     section = Section("test", mock_tree)
     lines = section.render_section()
     assert lines == mock_lines
+
+def test_render_orphaned_tasks():
+    print(mock_tree_orphaned)
+    section = Section("test", mock_tree_orphaned)
+    lines = section.render_section()
+    print(lines)
+    assert "- [7]: Orphaned Task" in lines

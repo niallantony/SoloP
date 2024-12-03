@@ -2,11 +2,7 @@
 
 ## BACKLOG:
 
-- [1]: Make interactive client
 - [18]: Generate package
-- [19]: TEST: CLI interface commands
-- [37]: TEST: parentless task visibility
-- [39]: TEST: validations
 
 ## IN PROGRESS:
 
@@ -21,6 +17,7 @@
 - [12]: Throw meaningful exceptions for mismatched arguments - CLI
 - [13]: Parse CLI args in a more loosely coupled way
 - [15]: BUG: case sensitivity in status messages
+- [19]: TEST: CLI interface commands
 - [20]: CLI interface accepts multiple arguments
 - [22]: Refactor MD sections as objects to allow easier nesting
 - [26]: BUG: duplicate IDs? (Problem with nesting?)
@@ -29,7 +26,9 @@
 - [31]: TEST: unchild action
 - [32]: Delete task, move children to new parent
 - [35]: Add confirmation for deletion
+- [37]: TEST: parentless task visibility
 - [38]: Test --xmake
+- [39]: TEST: validations
 - [4]: Implement custom headers
 - [14]: Sort section headings in meaningful way (in progress not after Done etc...)
 

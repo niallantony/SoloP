@@ -27,18 +27,16 @@ def main():
     parser.add_argument('--child', nargs=2, help="Sets the first arg as the child of the second arg")
     parser.add_argument('--xchild', nargs=1, type=int, help="Un-nest a task from any parents")
     parser.add_argument('--inherit', action="store_true", help="Inherit mode attaches nested tasks to the parent task when unattaching a child")
-    parser.add_argument('--xmake', action="store_false", help="Include to make adjustments without writing to SOLOP file")
+    parser.add_argument('--xmake', action="store_true", help="Include to make adjustments without writing to SOLOP file")
     parser.add_argument('--all', action="store_true", help="Include to render all tasks to document regardless of given headers")
 
     args = parser.parse_args()
-    executer = CommandExecuter(args)
-    executer.execute_commands()
+    executer = CommandExecuter()
+    executer.execute_commands(vars(args))
 
 class CommandExecuter:
-    def __init__(self, args):
-        self.args = args
+    def __init__(self):
         self.actions = {
-            'xmake':self.make, #'xmake' by default is true, calling xmake won't run make
             'rename':self.rename,
             'add':self.add,
             'delete':self.delete,
@@ -46,51 +44,47 @@ class CommandExecuter:
             'child':self.child,
             'xchild':self.xchild,
             'priority':self.priority,
-            'inherit':self.inherit,
-            'all':self.all,
         }
 
-    def execute_commands(self):
-        passed = vars(self.args)
-        flags = passed.keys()
+    def execute_commands(self, args):
+        flags = args.keys()
         for flag in flags:
-            if not passed[flag]:
+            if not args[flag] or isinstance(args[flag], bool):
                 continue
-            self.actions[flag](passed[flag])
+            print(f"Calling {flag}:", self.actions[flag])
+            self.actions[flag](args)
+        if not args['xmake']:
+            self.make(args)
 
-    def make(self, _):
+    def make(self,args):
         file = load_file()
         writer = MDWriter(file['project'], file['tasks'], file['headers'])
-        writer.write_md_file(render_all=self.args.all)
+        writer.write_md_file(render_all=args['all'])
     
-    def inherit(self, _):
-        pass
+    def rename(self,args):
+        change_meta('project', args['rename'])
 
-    def all(self, _):
-        pass
-
-    def rename(self,name):
-        change_meta('project', name)
-
-    def add(self,description):
-        change_tasks(add_task, description)
+    def add(self,args):
+        change_tasks(add_task, args['add'])
         
     def delete(self,args):
         try:
-            args = self.as_ints(args) 
+            args = self.as_ints(args['delete']) 
             for task_id in args:
-                confirm = self.__get_confirmation(f"delete Task [{task_id}]")
+                confirm = self.get_confirmation(f"delete Task [{task_id}]")
                 if confirm:
                     change_tasks(delete_task,task_id)
         except (StopIteration):
             print("Task not found")
+        except (ValueError):
+            print("Please enter IDs as ints only")
 
     def status(self, args):
-        status_message = args.pop(0)
-        if len(args) == 0:
+        status_message = args['status'].pop(0)
+        if len(args['status']) == 0:
             print("--status expects 1+ arguments for IDs")
         try:
-            args = self.as_ints(args)
+            args = self.as_ints(args['status'])
             for id in args:
                 change_tasks(change_status,id, status_message)
         except (StopIteration):
@@ -110,17 +104,17 @@ class CommandExecuter:
     
     def priority(self, args):
         try:
-            args = self.as_ints(args)
-            priority = args.pop(0)
-            for id in args:
+            entered = self.as_ints(args['priority'])
+            priority = entered.pop(0)
+            for id in entered:
                 change_tasks(change_priority, id, priority)
         except (ValueError):
             print("Provide a list of IDs as ints only")
     
     def child(self, args):
         try:
-            child_id = int(args[0])
-            parent_id = int(args[1])
+            child_id = int(args['child'][0])
+            parent_id = int(args['child'][1])
             change_tasks(set_as_child, child_id, parent_id)
         except (StopIteration):
             print("Tasks not found")
@@ -129,13 +123,16 @@ class CommandExecuter:
     
     def xchild(self, args):
         try:
-            change_tasks(unset_as_child, args[0], self.args.inherit)
+            assert isinstance(args['xchild'][0],int)
+            change_tasks(unset_as_child, args['xchild'][0], args['inherit'])
         except (StopIteration):
             print("Task not found")
         except (ValueError):
             print("Not a nested task")
+        except (AssertionError):
+            print("Please enter a single ID only ")
     
-    def __get_confirmation(self, action_string):
+    def get_confirmation(self, action_string):
         res = input(f"Confirm action [{action_string}](Y/n): ")
         if res.upper() == "Y" or res.upper() == "YES":
             return True

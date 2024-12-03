@@ -1,12 +1,7 @@
-from unittest.mock import  patch
+from unittest.mock import  patch, Mock
 import pytest
 import json
-from project_plan_manager.file_utils import(
-    load_tasks,
-    save_tasks,
-    change_meta,
-    InvalidAttrError
-)
+from project_plan_manager.file_utils import *
 
 mock_data = {
 "project":"Name",
@@ -55,5 +50,61 @@ def test_change_meta_not_existing():
         pytest.raises(InvalidAttrError):
         change_meta('foo','bar')
 
-
-   
+def test_runs_validations():
+    mock_validation1 = Mock(return_value=["Called 1"])
+    mock_validation2 = Mock()
+    validations = [mock_validation1, mock_validation2]
+    validate_tasks([], validations )
+    mock_validation1.assert_called_once()
+    mock_validation2.assert_called_once_with(["Called 1"])
+    
+@pytest.mark.parametrize("tasks, expected",[
+    pytest.param([],[], id="no tasks"),
+    pytest.param(
+        [
+            {"id":1, "description":"Task 1"},
+            {"id":2, "description":"Task 2"},
+            {"id":3, "description":"Task 3"},
+        ],[
+            {"id":1, "description":"Task 1"},
+            {"id":2, "description":"Task 2"},
+            {"id":3, "description":"Task 3"},
+        ], id="no changes needed"
+    ),
+    pytest.param(
+        [
+            {"id":1, "description":"Task 1"},
+            {"id":1, "description":"Task 2"},
+            {"id":2, "description":"Task 3"},
+        ],[
+            {"id":1, "description":"Task 1"},
+            {"id":3, "description":"Task 2"},
+            {"id":2, "description":"Task 3"},
+        ], id="simple change needed"
+    ),
+    pytest.param(
+        [
+            {"id":3, "description":"Task 1"},
+            {"id":3, "description":"Task 2"},
+            {"id":2, "description":"Task 3"},
+        ],[
+            {"id":3, "description":"Task 1"},
+            {"id":1, "description":"Task 2"},
+            {"id":2, "description":"Task 3"},
+        ], id="adds lower id if available"
+    ),
+    pytest.param(
+        [
+            {"id":1, "description":"Task 1"},
+            {"id":1, "description":"Task 2"},
+            {"id":1, "description":"Task 3"},
+        ],[
+            {"id":1, "description":"Task 1"},
+            {"id":2, "description":"Task 2"},
+            {"id":3, "description":"Task 3"},
+        ], id="several changes needed"
+    ),
+])
+def test_validates_ids(tasks, expected):
+    newtasks = validate_duplicate_ids(tasks)
+    assert newtasks == expected
