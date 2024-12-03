@@ -2,11 +2,11 @@ import pytest
 from unittest.mock import patch
 import copy
 
-from project_plan_manager.task_utils import (
+from src.solop.task_utils import (
     Task,
 )
 
-from project_plan_manager.md_writer import (
+from src.solop.md_writer import (
     MDWriter,
     Section
 )

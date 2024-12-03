@@ -1,5 +1,6 @@
 import argparse
-from project_plan_manager.task_utils import (
+from solop.list_parser import ListParser
+from solop.task_utils import (
     add_task,
     delete_task, 
     change_status, 
@@ -7,13 +8,13 @@ from project_plan_manager.task_utils import (
     set_as_child, 
     unset_as_child
 )
-from project_plan_manager.file_utils import (
+from solop.file_utils import (
     change_tasks,
     load_tasks,
     load_file,
     change_meta,
 )
-from project_plan_manager.md_writer import (
+from solop.md_writer import (
     MDWriter
 )
 
@@ -24,11 +25,12 @@ def main():
     parser.add_argument('--status', nargs='*', help="Change a status message, takes an ID and new status")
     parser.add_argument('--rename', type=str, help="Rename the project with a given string")
     parser.add_argument('--priority', nargs='*', help="Changes the priority of tasks to the first given argument")
-    parser.add_argument('--child', nargs=2, help="Sets the first arg as the child of the second arg")
+    parser.add_argument('--nest', nargs=2, help="Sets the first arg as the child of the second arg")
     parser.add_argument('--xchild', nargs=1, type=int, help="Un-nest a task from any parents")
     parser.add_argument('--inherit', action="store_true", help="Inherit mode attaches nested tasks to the parent task when unattaching a child")
     parser.add_argument('--xmake', action="store_true", help="Include to make adjustments without writing to SOLOP file")
     parser.add_argument('--all', action="store_true", help="Include to render all tasks to document regardless of given headers")
+    parser.add_argument('--pull', type=str, help="Pull from an existing SOLOP.md file")
 
     args = parser.parse_args()
     executer = CommandExecuter()
@@ -41,9 +43,10 @@ class CommandExecuter:
             'add':self.add,
             'delete':self.delete,
             'status':self.status,
-            'child':self.child,
+            'nest':self.child,
             'xchild':self.xchild,
             'priority':self.priority,
+            'pull':self.pull,
         }
 
     def execute_commands(self, args):
@@ -51,7 +54,6 @@ class CommandExecuter:
         for flag in flags:
             if not args[flag] or isinstance(args[flag], bool):
                 continue
-            print(f"Calling {flag}:", self.actions[flag])
             self.actions[flag](args)
         if not args['xmake']:
             self.make(args)
@@ -113,8 +115,8 @@ class CommandExecuter:
     
     def child(self, args):
         try:
-            child_id = int(args['child'][0])
-            parent_id = int(args['child'][1])
+            child_id = int(args['nest'][0])
+            parent_id = int(args['nest'][1])
             change_tasks(set_as_child, child_id, parent_id)
         except (StopIteration):
             print("Tasks not found")
@@ -132,6 +134,10 @@ class CommandExecuter:
         except (AssertionError):
             print("Please enter a single ID only ")
     
+    def pull(self, args):
+        list = ListParser()
+        list.read_file(args['pull'])
+        
     def get_confirmation(self, action_string):
         res = input(f"Confirm action [{action_string}](Y/n): ")
         if res.upper() == "Y" or res.upper() == "YES":

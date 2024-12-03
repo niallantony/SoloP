@@ -1,5 +1,5 @@
 import re
-from project_plan_manager.task_utils import (
+from solop.task_utils import (
     get_of_status,
     sort_tasks,
     get_status_list,

@@ -1,35 +1,37 @@
-# SOLOP
+# SOLOP 1.1.0
 
 ## BACKLOG:
 
-- [18]: Generate package
+- [1]: Supress unpassed arguments - refactor
+- [2]: Implement milestones
+- [3]: Implement versioning/releases
+- [5]: Add git commit hooks
+- [6]: Git branch hook for in progress
+- [7]: Add timestamps
+- [8]: Add metrics (e.g. 'Done Today...')
+- [9]: Add archiving
+- [10]: Allow importing
+- [11]: Add config file for priority labels
+- [12]: Add config file for visibility options
+- [13]: Add recommended next task
+- [14]: BUG: can't work with broken json file (e.g. tasks:{} <- is dict/not list
+- [15]: Make interactive client
+- [16]: Improve MD doc formatting
+- [17]: Implement dependencies
+- [18]: Add argparse options for more detailed help
+- [19]: Timestamps for tasks
+- [20]: Feature wishlists
+- [21]: Progress markers?
+- [22]: Highlighting critical tasks/bottlenecks
+- [23]: Warning for too many tasks in progress (configurable in progress cap?)
+- [24]: BUG:CLI catching of InvalidTaskError
+- [25]: Decorators for TEST BUG etc
 
 ## IN PROGRESS:
 
+- [4]: Implement PULL from MD command
 
 ## DONE:
 
-- [2]: Implement nested tasks
-- [28]: Add un-child action
-- [3]: Implement in_progress and done sections
-- [5]: Implement priority levels
-- [11]: TEST: Fix new-line error in task
-- [12]: Throw meaningful exceptions for mismatched arguments - CLI
-- [13]: Parse CLI args in a more loosely coupled way
-- [15]: BUG: case sensitivity in status messages
-- [19]: TEST: CLI interface commands
-- [20]: CLI interface accepts multiple arguments
-- [22]: Refactor MD sections as objects to allow easier nesting
-- [26]: BUG: duplicate IDs? (Problem with nesting?)
-- [29]: Add guards against duplicate IDs
-- [30]: BUG: Nested tasks in different sections
-- [31]: TEST: unchild action
-- [32]: Delete task, move children to new parent
-- [35]: Add confirmation for deletion
-- [37]: TEST: parentless task visibility
-- [38]: Test --xmake
-- [39]: TEST: validations
-- [4]: Implement custom headers
-- [14]: Sort section headings in meaningful way (in progress not after Done etc...)
 
 This document was generated with SoloP
