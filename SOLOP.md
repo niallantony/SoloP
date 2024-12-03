@@ -5,9 +5,9 @@
 - [1]: Make interactive client
 - [18]: Generate package
 - [19]: TEST: CLI interface commands
-- [29]: Add guards against duplicate IDs
 - [35]: Add confirmation for deletion
 - [37]: TEST: parentless task visibility
+- [39]: TEST: validations
 
 ## IN PROGRESS:
 
@@ -25,6 +25,7 @@
 - [20]: CLI interface accepts multiple arguments
 - [22]: Refactor MD sections as objects to allow easier nesting
 - [26]: BUG: duplicate IDs? (Problem with nesting?)
+- [29]: Add guards against duplicate IDs
 - [30]: BUG: Nested tasks in different sections
 - [31]: TEST: unchild action
 - [32]: Delete task, move children to new parent
