@@ -33,7 +33,7 @@ As of Version 1 *SoloP* is only accessible by the CLI. Tasks can be added, delet
 
 Calling `solop` with no flags will update the `SOLOP.md` file with any unsaved changes.
 
-  Note: Including the `--xmake` flag in any action will not publish the action to the `SOLOP.md` file, but the action will be visible next time the file is made.
+Note: Including the `--xmake` flag in any action will not publish the action to the `SOLOP.md` file, but the action will be visible next time the file is made.
 
 | Action | Flag | Description |
 | -------| ---- | ----------- |
