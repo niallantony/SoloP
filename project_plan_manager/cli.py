@@ -79,7 +79,9 @@ class CommandExecuter:
         try:
             args = self.as_ints(args) 
             for task_id in args:
-                change_tasks(delete_task,task_id)
+                confirm = self.__get_confirmation(f"delete Task [{task_id}]")
+                if confirm:
+                    change_tasks(delete_task,task_id)
         except (StopIteration):
             print("Task not found")
 
@@ -132,6 +134,13 @@ class CommandExecuter:
             print("Task not found")
         except (ValueError):
             print("Not a nested task")
+    
+    def __get_confirmation(self, action_string):
+        res = input(f"Confirm action [{action_string}](Y/n): ")
+        if res.upper() == "Y" or res.upper() == "YES":
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":

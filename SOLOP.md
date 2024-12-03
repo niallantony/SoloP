@@ -5,7 +5,6 @@
 - [1]: Make interactive client
 - [18]: Generate package
 - [19]: TEST: CLI interface commands
-- [35]: Add confirmation for deletion
 - [37]: TEST: parentless task visibility
 - [39]: TEST: validations
 
@@ -29,6 +28,7 @@
 - [30]: BUG: Nested tasks in different sections
 - [31]: TEST: unchild action
 - [32]: Delete task, move children to new parent
+- [35]: Add confirmation for deletion
 - [38]: Test --xmake
 - [4]: Implement custom headers
 - [14]: Sort section headings in meaningful way (in progress not after Done etc...)
