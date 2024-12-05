@@ -1,0 +1,210 @@
+{
+    "project": "SoloP 1.1.0",
+    "tasks": [
+        {
+            "id": 1,
+            "description": "Supress unpassed arguments - refactor",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 2,
+            "description": "Implement milestones",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 3,
+            "description": "Implement versioning/releases",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 4,
+            "description": "Implement PULL from MD command",
+            "status": "in_progress",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 5,
+            "description": "Add git commit hooks",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 6,
+            "description": "Git branch hook for in progress",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 7,
+            "description": "Add timestamps",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 8,
+            "description": "Add metrics (e.g. 'Done Today...')",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 9,
+            "description": "Add archiving",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 10,
+            "description": "Allow importing",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 11,
+            "description": "Add config file for priority labels",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 12,
+            "description": "Add config file for visibility options",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 13,
+            "description": "Add recommended next task",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 14,
+            "description": "BUG: can't work with broken json file (e.g. tasks:{} <- is dict/not list",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 15,
+            "description": "Make interactive client",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 16,
+            "description": "Improve MD doc formatting",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 17,
+            "description": "Implement dependencies",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 18,
+            "description": "Add argparse options for more detailed help",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 19,
+            "description": "Timestamps for tasks",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 20,
+            "description": "Feature wishlists",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 21,
+            "description": "Progress markers?",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 22,
+            "description": "Highlighting critical tasks/bottlenecks",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 23,
+            "description": "Warning for too many tasks in progress (configurable in progress cap?)",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 24,
+            "description": "BUG:CLI catching of InvalidTaskError",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 25,
+            "description": "Decorators for TEST BUG etc",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        }
+    ],
+    "headers": [
+        "backlog",
+        "in_progress",
+        "done"
+    ]
+}

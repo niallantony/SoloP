@@ -1,7 +1,7 @@
 from unittest.mock import patch
 import copy
 import pytest
-from project_plan_manager.task_utils import *
+from src.solop.task_utils import *
 
 mock_data = [
 {

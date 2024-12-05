@@ -39,7 +39,7 @@ Find the package at the following URL: [PyPI page for SoloP](https://pypi.org/pr
 
 ### Actions
 
-Calling `solop` with no flags will update the `SOLOP.md` file with any unsaved changes.
+Calling `solop-cli` with no flags will update the `SOLOP.md` file with any unsaved changes.
 
 Note: Including the `--xmake` flag in any action will not publish the action to the `SOLOP.md` file, but the action will be visible next time the file is made.
 
