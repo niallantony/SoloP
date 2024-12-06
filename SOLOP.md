@@ -7,7 +7,6 @@
 - [3]: Implement versioning/releases
 - [5]: Add git commit hooks
 - [6]: Git branch hook for in progress
-- [7]: Add timestamps
 - [8]: Add metrics (e.g. 'Done Today...')
 - [9]: Add archiving
 - [10]: Allow importing
@@ -17,6 +16,8 @@
 - [14]: BUG: can't work with broken json file (e.g. tasks:{} <- is dict/not list
 - [15]: Make interactive client
 - [16]: Improve MD doc formatting
+	- [25]: Decorators for TEST BUG etc
+		- [7]: Add timestamps
 - [17]: Implement dependencies
 - [18]: Add argparse options for more detailed help
 - [19]: Timestamps for tasks
@@ -25,7 +26,11 @@
 - [22]: Highlighting critical tasks/bottlenecks
 - [23]: Warning for too many tasks in progress (configurable in progress cap?)
 - [24]: BUG:CLI catching of InvalidTaskError
-- [25]: Decorators for TEST BUG etc
+- [26]: TEST: Tests for pull
+	- [29]: Test multiple children
+	- [28]: Test multiple parents
+	- [27]: Test nested tasks pull
+- [30]: Pull duplicate items (when sharing parents) (Perhaps something like a merge conflict)
 
 ## IN PROGRESS:
 
@@ -34,4 +39,4 @@
 ## DONE:
 
 
-This document was generated with SoloP
+( This document was generated with SoloP )

@@ -55,7 +55,9 @@
             "status": "backlog",
             "priority": 1,
             "children": [],
-            "parent": []
+            "parent": [
+                25
+            ]
         },
         {
             "id": 8,
@@ -126,7 +128,9 @@
             "description": "Improve MD doc formatting",
             "status": "backlog",
             "priority": 1,
-            "children": [],
+            "children": [
+                25
+            ],
             "parent": []
         },
         {
@@ -196,6 +200,60 @@
         {
             "id": 25,
             "description": "Decorators for TEST BUG etc",
+            "status": "backlog",
+            "priority": 1,
+            "children": [
+                7
+            ],
+            "parent": [
+                16
+            ]
+        },
+        {
+            "id": 26,
+            "description": "TEST: Tests for pull",
+            "status": "backlog",
+            "priority": 1,
+            "children": [
+                29,
+                28,
+                27
+            ],
+            "parent": []
+        },
+        {
+            "id": 27,
+            "description": "Test nested tasks pull",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": [
+                26
+            ]
+        },
+        {
+            "id": 28,
+            "description": "Test multiple parents",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": [
+                26
+            ]
+        },
+        {
+            "id": 29,
+            "description": "Test multiple children",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": [
+                26
+            ]
+        },
+        {
+            "id": 30,
+            "description": "Pull duplicate items (when sharing parents) (Perhaps something like a merge conflict)",
             "status": "backlog",
             "priority": 1,
             "children": [],

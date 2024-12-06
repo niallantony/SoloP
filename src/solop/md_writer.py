@@ -49,7 +49,7 @@ class MDWriter:
                 for line in lines:
                     writer.write(line + "\n")
                 writer.write(_br(1))
-            writer.write("This document was generated with SoloP")
+            writer.write("( This document was generated with SoloP )")
             
     def extend_headers(self):
         all_headers = get_status_list(self.tasks)

@@ -117,11 +117,14 @@ class CommandExecuter:
         try:
             child_id = int(args['nest'][0])
             parent_id = int(args['nest'][1])
+            assert child_id is not parent_id, f"Cannot nest with self"
             change_tasks(set_as_child, child_id, parent_id)
         except (StopIteration):
             print("Tasks not found")
         except (ValueError):
             print("Please input IDs as ints only")
+        except (AssertionError) as e:
+            print(str(e))
     
     def xchild(self, args):
         try:
@@ -136,7 +139,7 @@ class CommandExecuter:
     
     def pull(self, args):
         list = ListParser()
-        list.read_file(args['pull'])
+        list.parse_doc(args['pull'])
         
     def get_confirmation(self, action_string):
         res = input(f"Confirm action [{action_string}](Y/n): ")
