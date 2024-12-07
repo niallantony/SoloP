@@ -70,8 +70,7 @@ class Section:
     def get_layout(self, tasks):
         layout_map = {}
         for task in tasks:
-            if len(task.setdefault('parent',[])) == 0 or (set(task.setdefault('parent',[])).isdisjoint(self.ids)):
-
+            if isinstance(task.setdefault('parent', []),list) or task['id'] not in self.ids:
                 layout_map[str(task['id'])] = self.get_children(task['id'])
         return layout_map
     

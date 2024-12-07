@@ -33,28 +33,28 @@ mock_data_test_children = [
         "id":1,
         "description":"Test, tier 1",
         "status": "backlog",
-        "parent":[],
+        "parent":None,
         "children":[2]
     },
     {
         "id":2,
         "description":"Test, tier 2",
         "status": "backlog",
-        "parent":[1],
+        "parent":1,
         "children":[3]
     },
     {
         "id":3,
         "description":"Test, tier 3",
         "status": "backlog",
-        "parent":[2],
+        "parent":2,
         "children":[4]
     },
     {
         "id":4,
         "description":"Test, tier 4",
         "status": "backlog",
-        "parent":[3],
+        "parent":3,
         "children":[]
     },
 ]
@@ -86,9 +86,9 @@ def test_delete_task():
     assert task_id not in [task['id'] for task in modified_tasks]
 
 @pytest.mark.parametrize("delete,expected", [
-    pytest.param(1, {2:([],[3]),3:([2],[4]),4:([3],[])}, id="delete top"),
-    pytest.param(2, {1:([],[3]),3:([1],[4]),4:([3],[])}, id="delete mid"),
-    pytest.param(4, {1:([],[2]),2:([1],[3]),3:([2],[])}, id="delete last"),
+    pytest.param(1, {2:(None,[3]),3:(2,[4]),4:(3,[])}, id="delete top"),
+    pytest.param(2, {1:(None,[3]),3:(1,[4]),4:(3,[])}, id="delete mid"),
+    pytest.param(4, {1:(None,[2]),2:(1,[3]),3:(2,[])}, id="delete last"),
 ])
 def test_delete_nested_task(delete, expected):
     newtasks = delete_task(copy.deepcopy(mock_data_test_children),delete)
@@ -197,7 +197,7 @@ def test_set_as_child():
     newtasks = set_as_child(mock_data_extended.copy(),1,3)
     print(newtasks)
     assert newtasks[2]['children'] == [mock_data_extended[0]["id"]]
-    assert newtasks[0]['parent'] == [mock_data_extended[2]["id"]]
+    assert newtasks[0]['parent'] == mock_data_extended[2]["id"]
 
 @pytest.mark.parametrize("tasks, child_id,parent_id", [
     pytest.param(mock_data_extended,4,1,id="child missing"),
@@ -211,10 +211,10 @@ def test_set_as_child_missing_task(tasks, child_id,parent_id):
     assert data == tasks
 
 @pytest.mark.parametrize("tasks, remove, expected", [
-    pytest.param(copy.deepcopy(mock_data_test_children), 1, {1:([],[2]),2:([1],[3]),3:([2],[4]),4:([3],[])}, id="remove top"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 2, {1:([],[]),2:([],[3]),3:([2],[4]),4:([3],[])}, id="remove second"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 3, {1:([],[2]),2:([1],[]),3:([],[4]),4:([3],[])}, id="remove third"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 4, {1:([],[2]),2:([1],[3]),3:([2],[]),4:([],[])}, id="remove fourth"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 1, {1:(None,[2]),2:(1,[3]),3:(2,[4]),4:(3,[])}, id="remove top"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 2, {1:(None,[]),2:(None,[3]),3:(2,[4]),4:(3,[])}, id="remove second"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 3, {1:(None,[2]),2:(1,[]),3:(None,[4]),4:(3,[])}, id="remove third"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 4, {1:(None,[2]),2:(1,[3]),3:(2,[]),4:(None,[])}, id="remove fourth"),
 ])
 def test_unset_as_child(tasks, remove, expected):
     newtasks = unset_as_child(tasks, remove)
@@ -223,10 +223,10 @@ def test_unset_as_child(tasks, remove, expected):
         assert task['children'] == expected[task['id']][1]
 
 @pytest.mark.parametrize("tasks, remove, expected", [
-    pytest.param(copy.deepcopy(mock_data_test_children), 1, {1:([],[2]),2:([1],[3]),3:([2],[4]),4:([3],[])}, id="remove top"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 2, {1:([],[3]),2:([],[]),3:([1],[4]),4:([3],[])}, id="remove second"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 3, {1:([],[2]),2:([1],[4]),3:([],[]),4:([2],[])}, id="remove third"),
-    pytest.param(copy.deepcopy(mock_data_test_children), 4, {1:([],[2]),2:([1],[3]),3:([2],[]),4:([],[])}, id="remove fourth"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 1, {1:(None,[2]),2:(1,[3]),3:(2,[4]),4:(3,[])}, id="remove top"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 2, {1:(None,[3]),2:(None,[]),3:(1,[4]),4:(3,[])}, id="remove second"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 3, {1:(None,[2]),2:(1,[4]),3:(None,[]),4:(2,[])}, id="remove third"),
+    pytest.param(copy.deepcopy(mock_data_test_children), 4, {1:(None,[2]),2:(1,[3]),3:(2,[]),4:(None,[])}, id="remove fourth"),
 ])
 def test_unset_as_child_with_inherit(tasks, remove, expected):
     newtasks = unset_as_child(tasks, remove, inherit=True)
@@ -234,3 +234,10 @@ def test_unset_as_child_with_inherit(tasks, remove, expected):
         print(f"Task {task['id']}:", task)
         assert task['parent'] == expected[task['id']][0]
         assert task['children'] == expected[task['id']][1]
+
+def test_swap_parents():
+    tasks = copy.deepcopy(mock_data_test_children)
+    newtasks = set_as_child(tasks, 3, 1)
+    assert newtasks[2]['parent'] == 1
+    assert 3 not in newtasks[1]['children']
+    assert 3 in newtasks[0]['children']

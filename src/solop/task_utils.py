@@ -72,8 +72,8 @@ def add_task(tasks, description):
 
 def delete_task(tasks, task_id):
     delete_task = find_task(tasks, task_id)
-    for parent in delete_task.setdefault('parent', []):
-        parent_task = find_task(tasks, parent)
+    if delete_task.setdefault("parent",None):
+        parent_task = find_task(tasks, delete_task["parent"])
         tasks = remove_child(tasks, parent_task, delete_task['id'])
         tasks = inherit_children(tasks, parent_task, delete_task['children'])
     for child in delete_task.setdefault('children',[]):
@@ -99,21 +99,22 @@ def find_task(tasks, task_id):
 
 def set_as_child(tasks, child_id, parent_id):
     child = find_task(tasks, child_id)
+    if 'parent' in child.keys() and isinstance(child['parent'], int):
+        old_parent = find_task(tasks, child['parent'])
+        tasks = remove_child(tasks, old_parent, child['id'])
     parent = find_task(tasks, parent_id)
-    tasks[tasks.index(child)].setdefault("parent",[]).append(parent_id)
+    tasks[tasks.index(child)]["parent"] = parent_id
     tasks[tasks.index(parent)].setdefault("children",[]).append(child_id)
     return tasks
     
 def unset_as_child(tasks, child_id, inherit=False):
     child = find_task(tasks, child_id)
-    parents = child['parent']
-    if len(parents) == 0:
+    if not child.setdefault('parent',None):
         return tasks
-    for parent in parents:
-        parent_task = find_task(tasks, parent)
-        tasks = remove_child(tasks, parent_task, child['id'])
-        if inherit:
-            tasks = inherit_children(tasks, parent_task, child['children'])
+    parent_task = find_task(tasks, child['parent'])
+    tasks = remove_child(tasks, parent_task, child['id'])
+    if inherit:
+        tasks = inherit_children(tasks, parent_task, child['children'])
 
     "inherit mode attaches grandchildren onto the parent node"
     if inherit:
@@ -121,7 +122,7 @@ def unset_as_child(tasks, child_id, inherit=False):
             grandchild_task = find_task(tasks, grandchild)
             tasks = inherit_parent(tasks, grandchild_task, child['id'], child['parent'])
         tasks[tasks.index(child)]["children"] = []
-    tasks[tasks.index(child)]["parent"] = []
+    tasks[tasks.index(child)]["parent"] = None
     return tasks
 
 
@@ -134,8 +135,7 @@ def inherit_children(tasks, parent, children):
     return tasks
     
 def inherit_parent(tasks, grandchild, child, parent):
-    tasks[tasks.index(grandchild)]['parent'].remove(child)
-    tasks[tasks.index(grandchild)]['parent'].extend(parent)
+    tasks[tasks.index(grandchild)]['parent'] = parent
     return tasks
 
 def sort_tasks(tasks, attr):

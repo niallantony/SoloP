@@ -31,10 +31,10 @@ mock_list = [
 mock_tree = [
     {"id":1, "description":"Task 1", "priority":1, "parent":[], "children":[]},
     {"id":2, "description":"Task 2", "priority":2, "parent":[], "children":[3,5]},
-    {"id":3, "description":"Task 3", "priority":5, "parent":[2], "children": []},
+    {"id":3, "description":"Task 3", "priority":5, "parent":2, "children": []},
     {"id":4, "description":"Task 4", "priority":3, "parent":[], "children": []},
-    {"id":5, "description":"Task 5", "priority":2, "parent":[2], "children": [6,3]},
-    {"id":6, "description":"Task 6", "priority":1, "parent":[5], "children": []},
+    {"id":5, "description":"Task 5", "priority":2, "parent":2, "children": [6]},
+    {"id":6, "description":"Task 6", "priority":1, "parent":5, "children": []},
 ]
 
 mock_tree_orphaned = copy.deepcopy(mock_tree)
@@ -51,8 +51,7 @@ mock_layout = {
     "2":[{
         "3":[],
         "5":[{
-            "6":[],
-            "3":[]
+            "6":[]
         }]
     }],
     "4":[]
@@ -64,7 +63,6 @@ mock_lines = [
     "- [2]: Task 2",
     "\t- [5]: Task 5",
     "\t\t- [6]: Task 6",
-    "\t\t- [3]: Task 3",
     "\t- [3]: Task 3",
     "- [4]: Task 4",
 ]

@@ -10,12 +10,52 @@
             "parent": []
         },
         {
+            "id": 18,
+            "description": "Add argparse options for more detailed help",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 19,
+            "description": "Timestamps for tasks",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 37,
+            "description": "TEST: parentless task visibility",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 39,
+            "description": "TEST: validations",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
             "id": 2,
             "description": "Implement milestones",
             "status": "backlog",
             "priority": 1,
             "children": [],
             "parent": []
+        },
+        {
+            "id": 28,
+            "description": "Test multiple parents",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": 26
         },
         {
             "id": 3,
@@ -26,58 +66,8 @@
             "parent": []
         },
         {
-            "id": 4,
-            "description": "Implement PULL from MD command",
-            "status": "in_progress",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
             "id": 5,
             "description": "Add git commit hooks",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 6,
-            "description": "Git branch hook for in progress",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 7,
-            "description": "Add timestamps",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": [
-                25
-            ]
-        },
-        {
-            "id": 8,
-            "description": "Add metrics (e.g. 'Done Today...')",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 9,
-            "description": "Add archiving",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 10,
-            "description": "Allow importing",
             "status": "backlog",
             "priority": 1,
             "children": [],
@@ -108,6 +98,98 @@
             "parent": []
         },
         {
+            "id": 15,
+            "description": "Make interactive client",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 20,
+            "description": "Feature wishlists",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 22,
+            "description": "Highlighting critical tasks/bottlenecks",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 26,
+            "description": "TEST: Tests for pull",
+            "status": "backlog",
+            "priority": 1,
+            "children": [
+                29,
+                28,
+                27
+            ],
+            "parent": []
+        },
+        {
+            "id": 29,
+            "description": "Test multiple children",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": 26
+        },
+        {
+            "id": 30,
+            "description": "Pull duplicate items (when sharing parents) (Perhaps something like a merge conflict)",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 31,
+            "description": "Merge pulled list with existing",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 32,
+            "description": "TEST: list_parser.p",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 35,
+            "description": "TEST: swapping children",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 38,
+            "description": "Test --xmake",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 4,
+            "description": "Implement PULL from MD command",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
             "id": 14,
             "description": "BUG: can't work with broken json file (e.g. tasks:{} <- is dict/not list",
             "status": "backlog",
@@ -116,8 +198,40 @@
             "parent": []
         },
         {
-            "id": 15,
-            "description": "Make interactive client",
+            "id": 6,
+            "description": "Git branch hook for in progress",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 7,
+            "description": "Add timestamps",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 8,
+            "description": "Add metrics (e.g. 'Done Today...')",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 9,
+            "description": "Add archiving",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 10,
+            "description": "Allow importing",
             "status": "backlog",
             "priority": 1,
             "children": [],
@@ -142,40 +256,8 @@
             "parent": []
         },
         {
-            "id": 18,
-            "description": "Add argparse options for more detailed help",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 19,
-            "description": "Timestamps for tasks",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 20,
-            "description": "Feature wishlists",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
             "id": 21,
             "description": "Progress markers?",
-            "status": "backlog",
-            "priority": 1,
-            "children": [],
-            "parent": []
-        },
-        {
-            "id": 22,
-            "description": "Highlighting critical tasks/bottlenecks",
             "status": "backlog",
             "priority": 1,
             "children": [],
@@ -202,24 +284,8 @@
             "description": "Decorators for TEST BUG etc",
             "status": "backlog",
             "priority": 1,
-            "children": [
-                7
-            ],
-            "parent": [
-                16
-            ]
-        },
-        {
-            "id": 26,
-            "description": "TEST: Tests for pull",
-            "status": "backlog",
-            "priority": 1,
-            "children": [
-                29,
-                28,
-                27
-            ],
-            "parent": []
+            "children": [],
+            "parent": 16
         },
         {
             "id": 27,
@@ -227,33 +293,195 @@
             "status": "backlog",
             "priority": 1,
             "children": [],
-            "parent": [
-                26
-            ]
+            "parent": 26
         },
         {
-            "id": 28,
-            "description": "Test multiple parents",
+            "id": 33,
+            "description": "CLI for altering future attributes of tasks (dependencies, notes, etc...)",
             "status": "backlog",
             "priority": 1,
             "children": [],
-            "parent": [
-                26
-            ]
+            "parent": []
         },
         {
-            "id": 29,
-            "description": "Test multiple children",
+            "id": 34,
+            "description": "TEST: unnesting tasks which are present in children - but have no parent",
             "status": "backlog",
             "priority": 1,
             "children": [],
-            "parent": [
-                26
-            ]
+            "parent": []
         },
         {
-            "id": 30,
-            "description": "Pull duplicate items (when sharing parents) (Perhaps something like a merge conflict)",
+            "id": 36,
+            "description": "Make interactive client",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 40,
+            "description": "Implement nested tasks",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 41,
+            "description": "Implement in_progress and done sections",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 42,
+            "description": "Implement custom headers",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 43,
+            "description": "Implement priority levels",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 44,
+            "description": "TEST: Fix new-line error in task",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 45,
+            "description": "Throw meaningful exceptions for mismatched arguments - CLI",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 46,
+            "description": "Parse CLI args in a more loosely coupled way",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 47,
+            "description": "Sort section headings in meaningful way (in progress not after Done etc...)",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 48,
+            "description": "BUG: case sensitivity in status messages",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 49,
+            "description": "Generate package",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 50,
+            "description": "TEST: CLI interface commands",
+            "status": "backlog",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 51,
+            "description": "CLI interface accepts multiple arguments",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 52,
+            "description": "Refactor MD sections as objects to allow easier nesting",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 53,
+            "description": "BUG: duplicate IDs? (Problem with nesting?)",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 54,
+            "description": "Add un-child action",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 55,
+            "description": "Add guards against duplicate IDs",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 56,
+            "description": "BUG: Nested tasks in different sections",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 57,
+            "description": "TEST: unchild action",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 58,
+            "description": "Delete task, move children to new parent",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 59,
+            "description": "Add confirmation for deletion",
+            "status": "done",
+            "priority": 1,
+            "children": [],
+            "parent": []
+        },
+        {
+            "id": 60,
+            "description": "Test Merger and ListParser fully",
             "status": "backlog",
             "priority": 1,
             "children": [],

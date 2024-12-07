@@ -1,5 +1,5 @@
 import argparse
-from solop.list_parser import ListParser
+from solop.list_parser import ListParser, Merger
 from solop.task_utils import (
     add_task,
     delete_task, 
@@ -13,6 +13,7 @@ from solop.file_utils import (
     load_tasks,
     load_file,
     change_meta,
+    save_tasks
 )
 from solop.md_writer import (
     MDWriter
@@ -139,7 +140,13 @@ class CommandExecuter:
     
     def pull(self, args):
         list = ListParser()
+        file = load_file()
         list.parse_doc(args['pull'])
+        merger = Merger(file['tasks'], list.listitems)
+        new = merger.merge_pull()
+        save_tasks(new)
+        
+
         
     def get_confirmation(self, action_string):
         res = input(f"Confirm action [{action_string}](Y/n): ")
