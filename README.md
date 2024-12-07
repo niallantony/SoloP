@@ -4,10 +4,6 @@ SoloP will be a tool that can be used to manage a Solo Developers tasks when wor
  
 Current Version: Version 1.0.0
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> db6e488 (Update README)
 ## Example
 
 Using SoloP will help you automatically manage a `SOLOP.md` file:
